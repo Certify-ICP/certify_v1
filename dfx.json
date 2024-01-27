@@ -1,0 +1,30 @@
+{
+  "canisters": {
+    "certify_v1_backend": {
+      "candid": "src/certify_v1_backend/certify_v1_backend.did",
+      "package": "certify_v1_backend",
+      "type": "rust"
+    },
+    "certify_v1_frontend": {
+      "dependencies": [
+        "certify_v1_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/certify_v1_frontend/src/index.html"
+      },
+      "source": [
+        "src/certify_v1_frontend/assets",
+        "dist/certify_v1_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
