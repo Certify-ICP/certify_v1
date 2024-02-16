@@ -19,14 +19,14 @@ function Nav() {
         <a className="p-0 font-bold w-fit " href="">
           <Link to="/"> Home</Link>
         </a>
-        <a className="p-0 font-bold w-fit " href="/#howitworks">
+        <a className="p-0 font-bold w-fit " href="#howitworks">
           How it works?
         </a>
-        <a className="p-0 font-bold w-fit " onClick={handleClick} href="/#about">
+        <a className="p-0 font-bold w-fit " onClick={handleClick} href="#about">
           About Certify
         </a>
         <a className="p-0 font-bold w-fit " onClick={handleClick} href="">
-          <Link to='/universitymodal'> Universities</Link>
+          <Link to="/universitymodal"> Universities</Link>
         </a>
       </ul>
       <div className=" justify-self-end">
