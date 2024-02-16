@@ -1,4 +1,2 @@
 [workspace]
-members = [
-    "src/certify_v1_backend",
-]
+members = ["backend"]

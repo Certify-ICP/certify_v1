@@ -1,20 +1,20 @@
 {
   "canisters": {
-    "certify_v1_backend": {
-      "candid": "src/certify_v1_backend/certify_v1_backend.did",
+    "backend": {
+      "candid": "./backend/certify_v1_backend.did",
+      "main": "backend",
       "package": "certify_v1_backend",
       "type": "rust"
     },
-    "certify_v1_frontend": {
+    "frontend": {
       "dependencies": [
-        "certify_v1_backend"
+        "backend"
       ],
       "frontend": {
-        "entrypoint": "src/certify_v1_frontend/src/index.html"
+        "entrypoint": "dist/index.html"
       },
       "source": [
-        "src/certify_v1_frontend/assets",
-        "dist/certify_v1_frontend/"
+        "dist"
       ],
       "type": "assets"
     }

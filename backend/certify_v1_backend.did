@@ -1,0 +1,114 @@
+type CanisterError = variant {
+  AttemptedSelfTransfer;
+  CertificateAlreadyExists;
+  TokenNotFound;
+  NotAuthorizedAsCustodian;
+  NotAuthorizedAsOwner;
+  OwnerNotFound;
+  Other : text;
+  NotAuthorizedAsOperator;
+  TransactionNotFound;
+};
+type CanisterMetaData = record {
+  logo : opt text;
+  name : opt text;
+  created_at : nat64;
+  upgraded_at : nat64;
+  custodians : vec principal;
+  symbol : opt text;
+};
+type CanisterStats = record {
+  cycles : nat64;
+  total_transactions : nat64;
+  total_unique_holders : nat64;
+  total_supply : nat64;
+};
+type CertificateData = record { data : Data; name : text };
+type CertificateMetaData = record {
+  owner : principal;
+  properties : vec record { text; GenericValue };
+  is_burned : bool;
+  burned_at : opt nat64;
+  burned_by : opt principal;
+  minted_at : nat64;
+  minted_by : principal;
+};
+type Data = variant { Raw : vec nat8; Link : text };
+type GenericValue = variant {
+  Nat64Content : nat64;
+  Nat32Content : nat32;
+  BoolContent : bool;
+  Nat8Content : nat8;
+  Int64Content : int64;
+  IntContent : int;
+  NatContent : nat;
+  Nat16Content : nat16;
+  Int32Content : int32;
+  Int8Content : int8;
+  FloatContent : float64;
+  Int16Content : int16;
+  BlobContent : vec nat8;
+  NestedContent : Vec;
+  Principal : principal;
+  TextContent : text;
+};
+type Result = variant { Ok : nat; Err : CanisterError };
+type Result_1 = variant { Ok; Err : CanisterError };
+type Result_2 = variant { Ok : CertificateData; Err : CanisterError };
+type Result_3 = variant { Ok : CertificateMetaData; Err : CanisterError };
+type Result_4 = variant { Ok : principal; Err : CanisterError };
+type Result_5 = variant { Ok : nat64; Err : CanisterError };
+type Result_6 = variant { Ok : vec nat64; Err : CanisterError };
+type Result_7 = variant { Ok : vec CertificateMetaData; Err : CanisterError };
+type Vec = vec record {
+  text;
+  variant {
+    Nat64Content : nat64;
+    Nat32Content : nat32;
+    BoolContent : bool;
+    Nat8Content : nat8;
+    Int64Content : int64;
+    IntContent : int;
+    NatContent : nat;
+    Nat16Content : nat16;
+    Int32Content : int32;
+    Int8Content : int8;
+    FloatContent : float64;
+    Int16Content : int16;
+    BlobContent : vec nat8;
+    NestedContent : Vec;
+    Principal : principal;
+    TextContent : text;
+  };
+};
+service : {
+  balanceOf : (principal) -> (Result) query;
+  burnToken : (nat64) -> (Result_1);
+  getCanisterCustodians : () -> (vec principal) query;
+  getCanisterCycles : () -> (nat) query;
+  getCanisterLogo : () -> (opt text) query;
+  getCanisterMetadata : () -> (CanisterMetaData) query;
+  getCanisterStats : () -> (CanisterStats) query;
+  getCanisterSymbol : () -> (opt text) query;
+  getMyPrincipal : () -> (principal) query;
+  getTokenData : (nat64) -> (Result_2) query;
+  getTokenMetadata : (nat64) -> (Result_3) query;
+  getUserByName : (text) -> (Result_4) query;
+  greet : (text) -> (text) query;
+  mint : (
+      principal,
+      text,
+      opt nat64,
+      CertificateData,
+      opt vec record { text; GenericValue },
+    ) -> (Result_5);
+  ownerCertificateIds : (principal) -> (Result_6) query;
+  ownerOf : (nat64) -> (Result_4) query;
+  ownerTokenMetadata : (principal) -> (Result_7) query;
+  setCanisterCustodians : (vec principal) -> ();
+  setCanisterLogo : () -> (opt text);
+  setCanisterName : (opt text) -> ();
+  setCanisterSymbol : (opt text) -> ();
+  totalSupply : () -> (nat) query;
+  totalUniqueHolders : () -> (nat) query;
+}
