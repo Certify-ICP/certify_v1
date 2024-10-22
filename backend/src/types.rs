@@ -1,22 +1,29 @@
 use std::collections::{HashMap, HashSet};
 
 use candid::{CandidType, Int, Nat, Principal};
-use ic_cdk::{api, query, update};
-use serde::{de::value::Error, Deserialize, Serialize};
+use ic_cdk::api;
+use serde::{Deserialize, Serialize};
 
 #[derive(CandidType, Deserialize, Default)]
 pub struct CanisterState {
     pub metadata: CanisterMetaData,
-    pub certificates: HashMap<CertificateId, Certificate>,
-    pub owners: HashMap<Principal, HashSet<CertificateId>>,
-    pub owner_names: HashMap<String, Principal>,
     pub stats: CanisterStats,
+
+    pub certificates: HashMap<CertificateId, Certificate>,
+
+    pub issuers_principal_to_certificates: HashMap<Principal, HashSet<CertificateId>>,
+    pub issuers_principal_to_names: HashMap<Principal, String>,
+    pub issuers_names_to_principal: HashMap<String, Principal>,
+
+    pub holders_principal_to_certificates: HashMap<Principal, HashSet<CertificateId>>,
+    pub holders_principal_to_names: HashMap<Principal, String>,
+    pub holders_names_to_principal: HashMap<String, Principal>,
 }
 
 /// Metadata for ICP NFT standard.
-#[derive(CandidType, Deserialize, Clone, Default)]
+#[derive(CandidType, Deserialize, Clone)]
 pub struct CanisterMetaData {
-    pub name: Option<String>,
+    pub name: String,
     pub symbol: Option<String>,
     pub logo: Option<String>,
     pub created_at: u64,
@@ -25,49 +32,61 @@ pub struct CanisterMetaData {
     pub custodians: HashSet<Principal>,
 }
 
-pub type CertificateId = u64;
-
-#[derive(CandidType, Deserialize)]
-pub struct Certificate {
-    pub metadata: CertificateMetaData,
-    pub data: CertificateData,
-}
-
-#[derive(CandidType, Serialize, Deserialize, Clone)]
-pub struct CertificateMetaData {
-    pub owner: Principal,
-    pub is_burned: bool,
-    pub properties: Vec<(String, GenericValue)>,
-    pub burned_at: Option<u64>,
-    pub burned_by: Option<Principal>,
-    pub minted_at: u64,
-    pub minted_by: Principal,
-}
-
-impl CertificateMetaData {
-    pub fn new(owner: Principal, properties: Option<Vec<(String, GenericValue)>>) -> Self {
-        Self {
-            owner,
-            is_burned: false,
-            properties: properties.unwrap_or_default(),
-            burned_at: None,
-            burned_by: None,
-            minted_at: api::time(),
-            minted_by: owner,
+impl Default for CanisterMetaData {
+    fn default() -> Self {
+        CanisterMetaData {
+            name: "certify_v1".to_string(),
+            symbol: None,
+            logo: None,
+            created_at: api::time(),
+            upgraded_at: api::time(),
+            custodians: HashSet::default(),
         }
     }
 }
 
-#[derive(CandidType, Deserialize, Clone)]
-pub struct CertificateData {
-    pub name: String,
-    pub data: Data,
+pub type CertificateId = u64;
+
+#[derive(CandidType, Serialize, Deserialize, Clone)]
+pub struct Certificate {
+    pub title: String,
+    pub description: String,
+    pub blob: Vec<u8>,
+    pub holder: Principal,
+    pub issuer: Principal,
+    pub issued_at: u64,
 }
 
-#[derive(CandidType, Deserialize, Clone)]
-pub enum Data {
-    Link(String),
-    Raw(Vec<u8>),
+// Helper type for fetching information for displaying the certificate.
+#[derive(CandidType, Serialize, Deserialize, Clone)]
+pub struct CertificateInfo {
+    pub id: u64,
+    pub title: String,
+    pub description: String,
+    pub issuer_name: String,
+    pub issuer_address: Principal,
+    pub holder_name: String,
+    pub holder_address: Principal,
+    pub issued_at: u64,
+}
+
+impl Certificate {
+    pub fn new(
+        title: String,
+        description: String,
+        holder: Principal,
+        issuer: Principal,
+        blob: Vec<u8>,
+    ) -> Self {
+        Self {
+            title,
+            description,
+            blob,
+            holder,
+            issuer,
+            issued_at: api::time(),
+        }
+    }
 }
 
 #[derive(CandidType, Deserialize, Default, Clone)]
@@ -85,13 +104,14 @@ pub type CanisterResult<T> = Result<T, CanisterError>;
 #[derive(CandidType, Serialize)]
 pub enum CanisterError {
     AttemptedSelfTransfer,
-    TokenNotFound,
+    CertificateNotFound,
     TransactionNotFound,
     NotAuthorizedAsCustodian,
-    NotAuthorizedAsOwner,
+    NotAuthorizedAsHolder,
+    NotAuthorizedAsIssuer,
     NotAuthorizedAsOperator,
     CertificateAlreadyExists,
-    OwnerNotFound,
+    HolderNotFound,
     Other(String),
 }
 
