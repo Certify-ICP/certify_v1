@@ -22,6 +22,7 @@ function Footer() {
             Help
           </a>
         </ul>
+
         <ul className="flex  ">
           <li className="m-2">Privacy Policy</li>
           <li className="m-2">Terms of use</li>
