@@ -61,6 +61,7 @@ export default defineConfig({
       ...aliases,
     },
   },
+
   define: {
     "process.env": process.env,
   },
