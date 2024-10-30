@@ -21,6 +21,7 @@ pub struct CanisterState {
 }
 
 /// Metadata for ICP NFT standard.
+/// 
 #[derive(CandidType, Deserialize, Clone)]
 pub struct CanisterMetaData {
     pub name: String,
@@ -58,6 +59,7 @@ pub struct Certificate {
 }
 
 // Helper type for fetching information for displaying the certificate.
+//
 #[derive(CandidType, Serialize, Deserialize, Clone)]
 pub struct CertificateInfo {
     pub id: u64,
