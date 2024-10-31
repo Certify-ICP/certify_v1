@@ -19,10 +19,9 @@ function Footer() {
             About
           </a>
           <a href="" className="m-2 mx-4">
-            Help
+            Contact
           </a>
         </ul>
-
         <ul className="flex  ">
           <li className="m-2">Privacy Policy</li>
           <li className="m-2">Terms of use</li>
@@ -30,7 +29,7 @@ function Footer() {
       </div>
       <div className=" m-5 font-['Raleway'] ">
         <span className="   text-gray-300 font-light text-[14px]">
-          &copy;2023 . Certify. All rights reserved
+          Copyright@2023 . Certify. All rights reserved
         </span>
       </div>
     </footer>
