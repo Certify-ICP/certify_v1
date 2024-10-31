@@ -11,7 +11,7 @@ function Upload() {
   
 
   return (
-    <div className="flex flex-col inset-0 h-screen font-['Rubik'] bg-[#012a4a]">
+    <div className="flex flex-col inset-0 h-screen font-['Lato'] bg-[#012a4a]">
       <Nav />
       <div className="flex-grow mb-10 flex flex-col justify-center items-center w-screen ">
         <div className="p-2 h-fit bg-white w-fit rounded-lg shadow-lg ">

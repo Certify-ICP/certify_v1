@@ -15,15 +15,17 @@ function Nav() {
           <img src={logo} alt="" srcset="" className=" w-[100px]" />
         </Link>
       </div>
-      <ul className=" grid grid-cols-4 grid-rows-1 gap-4 text-[#012a4a]">
-        <a className="p-0 font-bold w-fit " href="">
-          <Link to="/"> Home</Link>
-        </a>
-        <a className="p-0 font-bold w-fit " href="#howitworks">
-          How it works?
-        </a>
-        <a className="p-0 font-bold w-fit " onClick={handleClick} href="#about">
+      <ul className=" grid grid-cols-3 grid-rows-1 gap-4 text-[#012a4a]">
+        
+        <a
+          className="p-0 font-bold w-fit "
+          onClick={handleClick}
+          href="/#about"
+        >
           About Certify
+        </a>{" "}
+        <a className="p-0 font-bold w-fit " href="/#howitworks">
+          How it works?
         </a>
         <a className="p-0 font-bold w-fit " onClick={handleClick} href="">
           <Link to="/universitymodal"> Universities</Link>
@@ -33,7 +35,7 @@ function Nav() {
         <Link to="/upload">
           <button
             formTarget=""
-            className="bg-[#1b263b] hover:bg-[#1b263bde] font-['Rubik'] font-bold p-3 text-white rounded-lg text-[13px]"
+            className="bg-[#1b263b] hover:bg-[#1b263bde] font-['Lato'] font-bold p-3 text-white rounded-lg text-[13px]"
           >
             Verify your Certificate
           </button>
